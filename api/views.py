@@ -4,7 +4,8 @@ import logging
 from fuzzywuzzy import fuzz
 from api import MODEL
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("common_logger")
+
 
 def pipeline(st, synonyms):
     return list(map(
@@ -30,8 +31,7 @@ def most_similar(request, word):
     if request.method == "GET":
         word.lower()
         try:
-            similars = MODEL.most_similar(word)
-            synonyms = pipeline(word, similars)
+            synonyms = pipeline(word, MODEL.most_similar(word))
             return JsonResponse({'similars': synonyms}, status=200)
         except KeyError:
             logger.info("Found no word " + word + " in dictionary")

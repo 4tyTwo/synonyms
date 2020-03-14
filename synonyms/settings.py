@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'synonyms.access_logger.access_log_middleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,6 +83,40 @@ MODEL_PATH = os.path.join(BASE_DIR, 'data/google_news_model.bin')
 
 MODEL = KeyedVectors.load_word2vec_format(
     MODEL_PATH, binary=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'bare': {
+            'format': '%(message)s',
+        },
+    },
+    'handlers': {
+        'access_file_logger': {
+            'class': 'logging.FileHandler',
+            'formatter': 'bare',
+            'filename': 'access.log'
+        },
+        'common_file_logger': {
+            'class': 'logging.FileHandler',
+            'formatter': 'bare',
+            'filename': 'common.log'
+        },
+    },
+    'loggers': {
+        'access_logger': {
+            'level': 'INFO',
+            'handlers': ['access_file_logger'],
+            'propagate': False,
+        },
+        'common_logger': {
+            'level': 'INFO',
+            'handlers': ['common_file_logger'],
+            'propagate': False
+        }
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
