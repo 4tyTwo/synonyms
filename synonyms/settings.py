@@ -13,19 +13,14 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from gensim.models import KeyedVectors
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '-(_8xe#!xw*20ll_j74qrp38_b!-al$_dmx$aexl&b=csgq125'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -40,13 +35,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'synonyms.access_logger.access_log_middleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'synonyms.urls'
@@ -69,16 +60,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'synonyms.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 MODEL_PATH = os.path.join(BASE_DIR, 'data/google_news_model.bin')
 
 MODEL = KeyedVectors.load_word2vec_format(
@@ -91,6 +72,9 @@ LOGGING = {
         'bare': {
             'format': '%(message)s',
         },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s'
+        }
     },
     'handlers': {
         'access_file_logger': {
@@ -100,7 +84,7 @@ LOGGING = {
         },
         'common_file_logger': {
             'class': 'logging.FileHandler',
-            'formatter': 'bare',
+            'formatter': 'verbose',
             'filename': 'common.log'
         },
     },
@@ -121,20 +105,7 @@ LOGGING = {
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+# AUTH_PASSWORD_VALIDATORS = []
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
