@@ -27,12 +27,14 @@ def filter_similar(st, synonyms):
 
 
 @csrf_exempt
-def most_similar(request, word):
+def most_similar(request):
     if request.method == "GET":
-        word.lower()
-        try:
-            synonyms = pipeline(word, MODEL.most_similar(word))
-            return JsonResponse({'similars': synonyms}, status=200)
-        except KeyError:
-            logger.info("Found no word " + word + " in dictionary")
+        word = request.GET.get("word", None)
+        if word is not None:
+            word.lower()
+            try:
+                synonyms = pipeline(word, MODEL.most_similar(word))
+                return JsonResponse({'similars': synonyms}, status=200)
+            except KeyError:
+                logger.info("Found no word " + word + " in dictionary")
     return HttpResponse(status=404)

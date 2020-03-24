@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('synonyms/<str:word>', views.most_similar, name='Synonyms'),
+    path('synonyms/', views.most_similar, name='Synonyms'),
 ]
